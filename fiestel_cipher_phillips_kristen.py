@@ -9,14 +9,14 @@ def round_function(R, K):
     # Input: R (4-bit right half), K (4-bit key)
     # Output: Result of R XOR K (4-bit)
     result = ""
-    print("This is key: ", K)
-    print("This is R: ", R)
+
+    # XOR operation
     for i in range(4):
         if (R[i] == "1" and K[i] == "0") or (R[i] == "0" and K[i] == "1"):
             result += "1"
         else:
             result += "0"
-    print("I am result: ", result)
+
     return result
             
     
@@ -34,9 +34,6 @@ def encrypt_block(plaintext, K1, K2):
     R0 = binary[4:]
     key1 = f"{K1:04b}"
     key2 = f"{K2:04b}"
-    print("Here is the binary in encrypt block: ", binary)
-    print("Here is the binary for L0 in encrypt block: ", L0)
-    print("Here is the binary for L0 in encrypt block: ", R0)
 
     # Round 1
     L1 = R0
@@ -49,7 +46,7 @@ def encrypt_block(plaintext, K1, K2):
     ciphertext = int(L2 + R2, 2)
     left = int(L2, 2)
     right = int(R2, 2)
-    print("This is answer in encrypt block: ", ciphertext)
+
     return ciphertext, left, right
     
 
@@ -61,7 +58,23 @@ def decrypt_block(ciphertext, K1, K2):
     # 3. Reverse Round 1: f'1 = round_function(L1, K1), L0 = R1 XOR f'1, R0 = L1
     # 4. Combine L0 and R0 into 8-bit decrypted text
     # Return: decrypted text (8-bit)
-    pass
+    binary = f"{ciphertext:08b}"
+    L2 = binary[:4]
+    R2 = binary[4:]
+    key1 = f"{K1:04b}"
+    key2 = f"{K2:04b}"
+
+    # Round 1
+    R1 = L2
+    L1 = round_function(L2, round_function(R2, key2))
+
+    # Round 2
+    R0 = L1
+    L0 = round_function(L1, round_function(R1, key1))
+
+    plaintext = int(L0 + R0, 2)
+    return plaintext
+
 
 def main():
     # Get input: 8-bit binary string
