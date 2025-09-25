@@ -26,20 +26,28 @@ def caesar_cipher(text, shift, decrypt=False):
     result = ""
     if decrypt == False:
         for i in range(len(text)):
-            if 97 <= ord(text[i]) <= 122:
-                num = (ord(text[i]) - 97) + shift
+            if text[i].isalpha() == False:
+                result += text[i]
+            if text[i].islower() == True:
+                num = (ord(text[i]) - 97) + shift    # Shift by 97 so that a = 0, b = 1, etc...
                 num = (num % 26) + 97
                 result += chr(num)
-            else:
-                result += text[i]
+            if text[i].isupper() == True:            # This checks that the letter is within the ASCII code for the alphabet
+                num = (ord(text[i]) - 65) + shift    # Shift by 65 so that A = 0, B = 1, etc...
+                num = (num % 26) + 65
+                result += chr(num)
     else:
         for i in range(len(text)):
-            if 97 <= ord(text[i]) <= 122:
-                num = (ord(text[i]) - 97) - shift
+            if text[i].isalpha() == False:
+                result += text[i]
+            if text[i].islower() == True:
+                num = (ord(text[i]) - 97) - shift    # Shift by 97 so that a = 0, b = 1, etc...
                 num = (num % 26) + 97
                 result += chr(num)
-            else:
-                result += text[i]
+            if text[i].isupper() == True:            # This checks that the letter is within the ASCII code for the alphabet
+                num = (ord(text[i]) - 65) - shift    # Shift by 65 so that A = 0, B = 1, etc...
+                num = (num % 26) + 65
+                result += chr(num)
 
     return result
 
